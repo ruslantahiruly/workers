@@ -109,7 +109,9 @@ export default {
   }),
   computed: mapGetters(['workers', 'loading']),
   async mounted() {
-    this.fetchWorkers();
+    if (this.$store.getters['workers'].length === 0) {
+      this.fetchWorkers();
+    }
   },
   methods: {
     ...mapActions(['fetchWorkers']),

@@ -3,10 +3,12 @@ import axios from 'axios';
 export default {
   state: {
     workers: [],
+    worker: {},
     loading: false,
   },
   getters: {
     workers: s => s.workers,
+    worker: s => s.worker,
     loading: s => s.loading,
   },
   mutations: {
@@ -23,6 +25,9 @@ export default {
     DELETE_WORKER(state, worker) {
       state.workers = state.workers.filter(item => item.id != worker.id);
     },
+    GET_WORKER(state, workerID) {
+      state.worker = state.workers.find(item => item.id == workerID);
+    },
     SET_LOADING(state, loading) {
       state.loading = loading;
     },
@@ -34,6 +39,9 @@ export default {
       const workers = response.data;
       commit('SET_WORKERS', workers);
       commit('SET_LOADING', false);
+    },
+    getWorker({commit}, workerID) {
+      commit('GET_WORKER', workerID);
     },
     addWorker({commit}, worker) {
       commit('ADD_WORKER', worker);

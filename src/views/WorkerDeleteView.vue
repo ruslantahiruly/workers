@@ -24,20 +24,25 @@
 
 <script>
 import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  data: () => ({
-    worker: {},
-  }),
+  computed: mapGetters(['worker']),
   async mounted() {
-    try {
-      const response = await axios.get(`https://my-json-server.typicode.com/ruslantahiruly/fake-api/workers/${this.$route.params.id}`);
-      this.worker = response.data;
-    } catch (err) {
-      this.error = err.response.data.message;
+    if (this.$store.getters['workers'].length > 0) {
+      const workerID = this.$route.params.id;
+      this.getWorker(workerID);
+    } else {
+      try {
+        const response = await axios.get(`https://my-json-server.typicode.com/ruslantahiruly/fake-api/workers/${this.$route.params.id}`);
+        this.worker = response.data;
+      } catch (err) {
+        this.error = err.response.data.message;
+      }  
     }
   },
   methods: {
+    ...mapActions(['getWorker']),
     async submit() {
       try {
         // await this.$axios.$delete('/delete-worker', this.worker);

@@ -126,10 +126,10 @@
 
 <script>
 import axios from 'axios';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data: (vm) => ({
-    worker: {},
     valid: true,
     firstName: '',
     lastName: '',
@@ -168,9 +168,10 @@ export default {
     menu: false,
   }),
   async mounted() {
-    try {
-      const response = await axios.get(`https://my-json-server.typicode.com/ruslantahiruly/fake-api/workers/${this.$route.params.id}`);
-      this.worker = response.data;
+    if (this.$store.getters['workers'].length > 0) {
+      const workerID = this.$route.params.id;
+      this.getWorker(workerID);
+
       this.firstName = this.worker.firstName;
       this.lastName = this.worker.lastName;
       this.middleName = this.worker.middleName;
@@ -178,11 +179,24 @@ export default {
       this.date = this.worker.dateOfBirth;
       this.division = this.worker.division;
       this.aboutMe = this.worker.aboutMe;
-    } catch (err) {
-      this.error = err.response.data.message;
+    } else {
+      try {
+        const response = await axios.get(`https://my-json-server.typicode.com/ruslantahiruly/fake-api/workers/${this.$route.params.id}`);
+        this.worker = response.data;
+        this.firstName = this.worker.firstName;
+        this.lastName = this.worker.lastName;
+        this.middleName = this.worker.middleName;
+        this.address = this.worker.address;
+        this.date = this.worker.dateOfBirth;
+        this.division = this.worker.division;
+        this.aboutMe = this.worker.aboutMe;
+      } catch (err) {
+        this.error = err.response.data.message;
+      }
     }
   },
   computed: {
+    ...mapGetters(['worker']),
     computedDateFormatted () {
       return this.formatDate(this.date);
     },
@@ -193,6 +207,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions(['getWorker']),
     formatDate (date) {
       if (!date) return null
 
