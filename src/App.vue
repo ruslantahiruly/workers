@@ -41,15 +41,18 @@
     <v-main>
       <router-view />
     </v-main>
+    <SimpleChatbot />
   </v-app>
 </template>
 
 <script>
-import TheAppBarUser from '@/components/TheAppBarUser'
+import TheAppBarUser from '@/components/TheAppBarUser';
+import SimpleChatbot from '@/components/SimpleChatbot/SimpleChatbot.vue';
 
 export default {
   components: {
     TheAppBarUser,
+    SimpleChatbot
   },
   data: () => ({
     drawer: true,
