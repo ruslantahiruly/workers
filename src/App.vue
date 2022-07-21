@@ -47,7 +47,7 @@
 
 <script>
 import TheAppBarUser from '@/components/TheAppBarUser';
-
+// Test comment
 import SimpleChatbot from '@/components/SimpleChatbot/SimpleChatbot.vue';
 
 export default {
